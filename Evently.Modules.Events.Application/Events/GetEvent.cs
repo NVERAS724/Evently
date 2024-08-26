@@ -1,29 +1,30 @@
-﻿using MediatR;
+﻿using Evently.Modules.Events.Domain.Events;
+using MediatR;
 
 namespace Evently.Modules.Events.Application.Events;
 
 
 public sealed record GetEventQuery(Guid EventId) : IRequest<EventResponse?>;
-public static class GetEvent
+internal sealed class GetEventQueryHandler(IEventRepository eventRepository) : IRequestHandler<GetEventQuery, EventResponse?>
 {
-    public static void MapEndpoint(IEndpointRouteBuilder app)
+    public async Task<EventResponse?> Handle(GetEventQuery request, CancellationToken cancellationToken)
     {
-        app.MapGet("events/{id}", async (Guid id, EventsDbContext context) =>
-        {
-            EventResponse? @event = await context.Events
-                 .Where(e => e.Id == id)
-                 .Select(e => new EventResponse(
-                     e.Id,
-                     e.Title,
-                     e.Description,
-                     e.Location,
-                     e.StartsAtUtc,
-                     e.EndsAtUtc
-                     ))
-                 .SingleOrDefaultAsync();
+        Event @event = await eventRepository.GetAsync(request.EventId);
 
-            return @event is null ? Results.NotFound() : Results.Ok(@event);
-        })
-            .WithTags(Tags.Events);
+        if(@event is null)
+        {
+            return null;
+        }
+
+        var eventResponse = new EventResponse(@event.Id,
+            @event.Title,
+            @event.Description,
+            @event.Location,
+            @event.StartsAtUtc,
+           @event.EndsAtUtc);
+
+
+        return eventResponse;
     }
 }
+

@@ -9,4 +9,5 @@ namespace Evently.Modules.Events.Application.Events;
 public interface IEventRepository
 {
     void Insert(Event @event);
+    Task<Event> GetAsync(Guid id);
 }
