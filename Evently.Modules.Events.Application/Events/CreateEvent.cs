@@ -1,5 +1,6 @@
 ﻿
 
+using Evently.Modules.Events.Application.Abstractions.Data;
 using Evently.Modules.Events.Domain.Events;
 using MediatR;
 using Microsoft.AspNetCore.Routing;
@@ -13,29 +14,28 @@ public sealed record CreateEventCommand(
    string Location,
    DateTime StartsAtUtc,
    DateTime? EndsAtUtc) : IRequest<Guid>;
-public static partial class CreateEvent
+internal sealed class CreateEventCommandHandler(IEventRepository eventRepository, IUnitOfWork unitOfWork) 
+    : IRequestHandler<CreateEventCommand, Guid>
 {
-    public static void MapEndpoint(IEndpointRouteBuilder app)
+   
+
+    public async Task<Guid> Handle(CreateEventCommand request, CancellationToken cancellationToken)
     {
-        app.MapPost("events", async (Request request, EventsDbContext context) =>
+        var @event = new Event
         {
-            var @event = new Event
-            {
-                Id = Guid.NewGuid(),
-                Title = request.Title,
-                Description = request.Description,
-                Location = request.Location,
-                StartsAtUtc = request.StartsAtUtc,
-                EndsAtUtc = request.EndsAtUtc,
-                Status = EventStatus.Draft
-            };
+            Id = Guid.NewGuid(),
+            Title = request.Title,
+            Description = request.Description,
+            Location = request.Location,
+            StartsAtUtc = request.StartsAtUtc,
+            EndsAtUtc = request.EndsAtUtc,
+            Status = EventStatus.Draft
+        };
 
-            context.Events.Add(@event);
+        eventRepository.Insert(@event);
 
-            await context.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return Results.Ok(@event.Id);
-        })
-        .WithTags(Tags.Events);
+        return @event.Id;
     }
 }
