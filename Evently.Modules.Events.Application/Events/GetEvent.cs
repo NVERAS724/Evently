@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Evently.Modules.Events.Api.Database;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
 
-namespace Evently.Modules.Events.Api.Events;
+namespace Evently.Modules.Events.Application.Events;
+
+
+public sealed record GetEventQuery(Guid EventId) : IRequest<EventResponse?>;
 public static class GetEvent
 {
     public static void MapEndpoint(IEndpointRouteBuilder app)

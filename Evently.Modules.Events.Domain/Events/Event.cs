@@ -1,7 +1,9 @@
-﻿namespace Evently.Modules.Events.Api.Events;
+﻿namespace Evently.Modules.Events.Domain.Events;
 
-internal sealed class Request
+public sealed class Event
 {
+    public Guid Id { get; set; }
+
     public string Title { get; set; }
 
     public string Description { get; set; }
@@ -11,4 +13,6 @@ internal sealed class Request
     public DateTime StartsAtUtc { get; set; }
 
     public DateTime? EndsAtUtc { get; set; }
+
+    public EventStatus Status { get; set; }
 }

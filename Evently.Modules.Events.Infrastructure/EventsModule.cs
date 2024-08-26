@@ -1,7 +1,6 @@
 ﻿
 
-using Evently.Modules.Events.Api.Database;
-using Evently.Modules.Events.Api.Events;
+using Evently.Modules.Events.Application.Events;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;

@@ -1,10 +1,18 @@
-﻿using Evently.Modules.Events.Api.Database;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
+﻿
+
+using Evently.Modules.Events.Domain.Events;
+using MediatR;
 using Microsoft.AspNetCore.Routing;
 
-namespace Evently.Modules.Events.Api.Events;
+namespace Evently.Modules.Events.Application.Events;
 
+
+public sealed record CreateEventCommand(
+   string Title,
+   string Description,
+   string Location,
+   DateTime StartsAtUtc,
+   DateTime? EndsAtUtc) : IRequest<Guid>;
 public static partial class CreateEvent
 {
     public static void MapEndpoint(IEndpointRouteBuilder app)
