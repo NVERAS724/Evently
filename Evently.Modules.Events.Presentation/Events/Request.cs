@@ -1,4 +1,4 @@
-﻿namespace Evently.Modules.Events.Application.Presentation;
+﻿namespace Evently.Modules.Events.Presentation.Events;
 
 internal sealed class Request
 {

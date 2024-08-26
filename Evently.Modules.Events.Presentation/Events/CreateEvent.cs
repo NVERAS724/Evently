@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace Evently.Modules.Events.Application.Presentation;
+namespace Evently.Modules.Events.Presentation.Events;
 
 internal static partial class CreateEvent
 {
