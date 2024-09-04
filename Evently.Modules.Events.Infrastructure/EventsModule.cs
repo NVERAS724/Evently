@@ -8,6 +8,7 @@ using Evently.Modules.Events.Infrastructure.Data;
 using Evently.Modules.Events.Infrastructure.Database;
 using Evently.Modules.Events.Infrastructure.Events;
 using Evently.Modules.Events.Presentation.Events;
+using FluentValidation;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -33,6 +34,8 @@ public static class EventsModule
             config.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly);
         });
 
+        services.AddValidatorsFromAssembly(typeof(AssemblyReference).Assembly, includeInternalTypes: true);
+
         services.AddInfrastructure(configuration);
 
         return services;
@@ -40,6 +43,7 @@ public static class EventsModule
 
     private static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+
         string databaseConnectionString = configuration.GetConnectionString("Database");
 
         NpgsqlDataSource npgsqlDataSource = new NpgsqlDataSourceBuilder(databaseConnectionString).Build();

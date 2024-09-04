@@ -1,4 +1,5 @@
 ﻿using Evently.Modules.Events.Application.Events;
+using Evently.Modules.Events.Application.Events.GetEvent;
 using Evently.Modules.Events.Presentation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
